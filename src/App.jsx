@@ -1,15 +1,30 @@
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { Login } from "./components/auth/Login";
+import { Signup } from "./components/auth/Signup";
+import { Navbar } from "./components/shared/Navbar";
+import { Home } from "./components/Home";
 
-
-import './App.css'
+const appRouter = createBrowserRouter([
+  {
+    path: "/",
+    element: <Home />,
+  },
+  {
+    path: "/login",
+    element: <Login />,
+  },
+  {
+    path: "/signup",
+    element: <Signup />,
+  },
+]);
 
 function App() {
-
-
   return (
     <>
-      <h1 className="text-red-500">This is not Rocket science.</h1>
+      <RouterProvider router={appRouter} />
     </>
-  )
+  );
 }
 
-export default App
+export default App;
