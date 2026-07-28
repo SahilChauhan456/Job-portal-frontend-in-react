@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Navbar } from "../shared/Navbar";
 import { Button } from "../ui/button";
 import { ArrowLeft, Loader2 } from "lucide-react";
@@ -8,8 +8,12 @@ import axios from "axios";
 import { COMPANY_API_END_POINT } from "@/utils/constant";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
+import { useSelector } from "react-redux";
+import useCompanyById from "@/hooks/useCompanyById";
 
 const CompanySetup = () => {
+  const params = useParams();
+  useCompanyById(params.id);
   const [input, setInput] = useState({
     name: "",
     description: "",
@@ -17,10 +21,9 @@ const CompanySetup = () => {
     location: "",
     file: null,
   });
-
+  const { singleCompany } = useSelector((store) => store.company);
   const [loading, setLoading] = useState(false);
 
-  const params = useParams();
   const navigate = useNavigate();
 
   const changeEventHandler = (e) => {
@@ -62,6 +65,29 @@ const CompanySetup = () => {
     }
   };
 
+  // useEffect(() => {
+  //   setInput(
+  //     {
+  //       name: singleCompany.name || "",
+  //       description: singleCompany.description || "",
+  //       website: singleCompany.website || "",
+  //       location: singleCompany.location || "",
+  //       file: singleCompany.file || null,
+  //     },
+  //     [singleCompany],
+  //   );
+  // });
+  useEffect(() => {
+    if (singleCompany?._id) {
+      setInput({
+        name: singleCompany.name || "",
+        description: singleCompany.description || "",
+        website: singleCompany.website || "",
+        location: singleCompany.location || "",
+        file: null,
+      });
+    }
+  }, [singleCompany]);
   return (
     <div>
       <Navbar />
